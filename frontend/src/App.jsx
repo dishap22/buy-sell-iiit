@@ -1,34 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, useColorModeValue } from '@chakra-ui/react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Navbar from './components/Navbar.jsx'
+import Home from './pages/Home.jsx'
+import Profile from './pages/Profile.jsx'
+import SignUp from './pages/SignUp.jsx'
+import Login from './pages/Login.jsx'
+import { useEffect, useState } from 'react';
+
+const PrivateRoute = ({ element }) => {
+  if (localStorage.getItem('token')) {
+    return element;
+  } else {
+    return <Navigate to="/login" />;
+  }
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem('token')));
 
+  useEffect(() => {
+    const handleStorageChange = () => {
+    setIsLoggedIn(Boolean(localStorage.getItem('token')));
+  }; 
+
+  window.addEventListener('storage', handleStorageChange);
+  return () => {
+    window.removeEventListener('storage', handleStorageChange);
+};
+}, []);
+
+  const token = localStorage.getItem('token');
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
+      {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />}
+      <Routes>
+        <Route 
+          path="/" 
+          element={isLoggedIn ? <Navigate to="/profile" /> : <Home />}
+        /> 
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
+        <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+      </Routes>
+    </Box>
   )
 }
 

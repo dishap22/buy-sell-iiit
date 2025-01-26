@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
@@ -7,9 +8,17 @@ const userSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     contactNumber : { type: Number, required: true },
     password: { type: String, required: true },
-    /* TODO: figure out how to store cart, reviews */  
+    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
 }, {
     timestamps: true
+});
+
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
 const User = mongoose.model('User', userSchema);
