@@ -1,6 +1,8 @@
 import Item from "../models/item.model.js"; // Replace with your actual item model
 import User from "../models/user.model.js"; // Replace with your actual user model
 
+
+// Return all or a filtered set of items for search page
 export const getItems = async (req, res) => {
   try {
     const { search, sellerName, categories, minPrice, maxPrice } = req.query;
@@ -9,7 +11,7 @@ export const getItems = async (req, res) => {
     let sellerQuery = {};
 
     if (search) {
-      query.name = { $regex: search, $options: "i" }; // Search by item name
+      query.name = { $regex: search, $options: "i" };
     }
 
     if (sellerName) {
@@ -22,9 +24,8 @@ export const getItems = async (req, res) => {
       const sellers = await User.find(sellerQuery, "_id");
       const sellerIDs = sellers.map((seller) => seller._id);
 
-      // Include sellerID filter if sellers are found
       if (sellerIDs.length > 0) {
-        query.sellerID = { $in: sellerIDs }; // Match items that belong to the sellers
+        query.sellerID = { $in: sellerIDs }; 
       }
     }
       
@@ -73,5 +74,19 @@ export const addItems = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(401).json({ message: error.message });
+  }
+};
+
+// Returns a single item by it's ID for the product pages
+export const getItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    console.log(itemId);
+    const item = await Item.findById(itemId).populate({ path: "sellerID", select: "firstName lastName" }); 
+    console.log(item); 
+    res.status(200).json(item);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };

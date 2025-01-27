@@ -8,6 +8,7 @@ import Login from './pages/Login.jsx'
 import { useEffect, useState } from 'react';
 import Search from './pages/Search.jsx'
 import AddItem from './pages/AddItem.jsx'
+import ItemPage from './pages/ItemPage.jsx'
 
 const PrivateRoute = ({ element }) => {
   if (localStorage.getItem('token')) {
@@ -31,7 +32,6 @@ function App() {
 };
 }, []);
 
-  const token = localStorage.getItem('token');
   return (
     <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
       {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />}
@@ -45,6 +45,7 @@ function App() {
         <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-item" element={<PrivateRoute element={<AddItem />} />} />
+        <Route path="/items/:itemId" element={<PrivateRoute element={<ItemPage />} />} />
       </Routes>
     </Box>
   )

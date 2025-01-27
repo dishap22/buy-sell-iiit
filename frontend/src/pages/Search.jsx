@@ -137,11 +137,14 @@ const Search = () => {
       {items.length > 0 ? (
         items.map((item) => (
           <Box
-            key={item.id}
+            key={item._id}
             p={4}
             borderWidth={1}
             borderRadius="lg"
-            onClick={() => Navigate(`/items/${item.id}`)}
+            onClick={() => {
+              console.log(item._id);
+              Navigate(`/items/${item._id}`)}
+            }
             cursor="pointer"
             _hover={{ shadow: "lg" }}
           >
