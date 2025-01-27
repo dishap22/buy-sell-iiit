@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Text, SimpleGrid, VStack, CheckboxGroup, Button, Input, HStack, Container, Heading, useToast } from "@chakra-ui/react";
+import { Box, Checkbox, Text, SimpleGrid, VStack, CheckboxGroup, Button, Input, HStack, Container, Heading, useToast } from "@chakra-ui/react";
 import axios from "axios";
 
 const Search = () => {
@@ -111,8 +111,9 @@ const Search = () => {
             <Heading size="md" mb={2}>
               {item.name}
             </Heading>
+            <Text>Description: {item.description}</Text>
             <Text>Price: ₹{item.price}</Text>
-            <Text>Vendor: {item.vendor}</Text>
+            <Text>Seller: {item.sellerID.firstName} {item.sellerID.lastName} </Text>
             <Text>Category: {item.category}</Text>
           </Box>
         ))

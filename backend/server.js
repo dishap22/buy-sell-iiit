@@ -4,7 +4,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import authRouter   from "./routes/auth.routes.js";
 import profileRouter from "./routes/profile.routes.js";
-import searchRouter from "./routes/search.routes.js";
+import itemsRouter from "./routes/items.routes.js";
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
-app.use("/api/items", searchRouter);
+app.use("/api/items", itemsRouter);
 
 app.listen(PORT ,() => {
     connectDB();
