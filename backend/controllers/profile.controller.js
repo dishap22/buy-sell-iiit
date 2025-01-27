@@ -6,7 +6,8 @@ export const getProfile = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         } else {
-            return res.status(200).json(user);
+            const userWithPassword = { ...user.toObject(), password: "" };
+            return res.status(200).json(userWithPassword);
         }   
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -24,7 +25,10 @@ export const updateProfile = async (req, res) => {
             user.email = req.body.email || user.email;
             user.age = req.body.age || user.age;
             user.contactNumber = req.body.contactNumber || user.contactNumber;
-            user.password = req.body.password || user.password;
+            if (req.body.password && req.body.password.trim() !== "") {
+                user.password = req.body.password; // Hashing will be handled by the pre('save') hook
+            }
+    
             await user.save();
             return res.status(200).json({ message: "Profile updated successfully" });
         }
