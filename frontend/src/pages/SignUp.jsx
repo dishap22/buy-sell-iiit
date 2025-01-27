@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { Button, Container, VStack, Heading, Box, Input, useColorModeValue, useToast } from "@chakra-ui/react";
+import { Text, Button, Container, VStack, Heading, Box, Input, useColorModeValue, useToast } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [newUser, setNewUser] = useState({
@@ -30,7 +31,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/register`, newUser);
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast({
           title: "Success",
           description: "User created successfully",
@@ -128,6 +129,9 @@ const SignUp = () => {
             <Button colorScheme="blue" onClick={handleAddNewUser} w='full'>
               Sign Up
             </Button>
+
+            <Text fontSize="sm" pt={8}> Already a user?</Text>
+          <Link to="/login" ><Text color={"blue.500"} fontSize={"sm"}>Login instead</Text></Link>
           </VStack>
         </Box>
       </VStack> 

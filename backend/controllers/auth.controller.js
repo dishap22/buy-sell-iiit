@@ -22,7 +22,7 @@ export const userRegistration = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: "Invalid user data" });
         } else {
-            return res.status(201).json({ message: "User created successfully" });
+            return res.status(200).json({ message: "User created successfully" });
         }
 
     } catch (error) {
@@ -42,7 +42,7 @@ export const userLogin = async (req, res) => {
                 return res.status(400).json({ message: "Invalid credentials" });
             } else {
                 const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-                return res.status(201).json({ token });
+                return res.status(200).json({ token });
             }
         }
     } catch (error) {

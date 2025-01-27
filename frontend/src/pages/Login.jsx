@@ -1,6 +1,6 @@
 import React from 'react'
-import { Container, VStack, Heading, Box, Input, Button, useToast, useColorModeValue } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { Container, VStack, Heading, Box, Input, Button, useToast, useColorModeValue, Text } from '@chakra-ui/react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 const Login = ({ onLogin }) => {
@@ -23,7 +23,7 @@ const Login = ({ onLogin }) => {
 
     try {
       const response = await axios.post(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/login`, credentials);
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast({
           title: "Success",
           description: "Login successful",
@@ -91,6 +91,9 @@ const Login = ({ onLogin }) => {
           <Button colorScheme="blue" onClick={handleLogin} w='full'>
             Sign In
           </Button>
+
+          <Text fontSize="sm" pt={8}> Not a user?</Text>
+          <Link to="/signup" ><Text color={"blue.500"} fontSize={"sm"}>Register instead</Text></Link>
         </VStack>
       </Box>
     </VStack> 
