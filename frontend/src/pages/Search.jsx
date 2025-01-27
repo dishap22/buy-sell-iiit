@@ -6,8 +6,11 @@ import axios from "axios";
 const Search = () => {
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sellerName, setSellerName] = useState('');
   const [filters, setFilters] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   const toast = useToast();
   const Navigate = useNavigate();
@@ -40,7 +43,10 @@ const Search = () => {
     try {
       const query = new URLSearchParams();
       if (searchQuery) query.append("search", searchQuery);
+      if (sellerName) query.append("sellerName", sellerName);
       if (filters.length) query.append("categories", filters.join(","));
+      if (minPrice) query.append("minPrice", minPrice);
+      if (maxPrice) query.append("maxPrice", maxPrice);
       const { data } = await axios.get(`http://localhost:5000/api/items?${query.toString()}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -57,8 +63,18 @@ const Search = () => {
     }
   };
 
+  const handlePriceChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "minPrice") setMinPrice(value);
+    if (name === "maxPrice") setMaxPrice(value);
+  };
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleSellerSearch = (e) => {
+    setSellerName(e.target.value);
   };
 
   const handleFilter = (selectedFilters) => {
@@ -76,14 +92,35 @@ const Search = () => {
     </Heading>
 
     <form onSubmit={handleSearchSubmit}>
-      <HStack spacing={4} mb={4}> 
+      <VStack spacing={4} mb={4}> 
         <Input
-          placeholder="Search"
+          placeholder="Search by item name"
           value={searchQuery}
           onChange={handleSearch}
         />
+        <Input
+          placeholder="Search by seller name"
+          value={sellerName}
+          onChange={handleSellerSearch}
+        />
+        <HStack spacing={4}>
+          <Input
+            name="minPrice"
+            placeholder="Min Price"
+            type="number"
+            value={minPrice}
+            onChange={handlePriceChange}
+          />
+          <Input
+            name="maxPrice"
+            placeholder="Max Price"
+            type="number"
+            value={maxPrice}
+            onChange={handlePriceChange}
+          />
+        </HStack>
         <Button type="submit">Search</Button>
-      </HStack>
+      </VStack>
 
       <CheckboxGroup onChange={handleFilter} value={filters} colorScheme="blue">
         <VStack align="start" mb={4}>

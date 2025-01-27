@@ -3,19 +3,41 @@ import User from "../models/user.model.js"; // Replace with your actual user mod
 
 export const getItems = async (req, res) => {
   try {
-    const { search, categories } = req.query;
+    const { search, sellerName, categories, minPrice, maxPrice } = req.query;
 
     let query = {};
+    let sellerQuery = {};
 
-    // Search by name (case insensitive)
     if (search) {
-      query.name = { $regex: search, $options: "i" };
+      query.name = { $regex: search, $options: "i" }; // Search by item name
     }
 
-    // Filter by categories
+    if (sellerName) {
+      sellerQuery = {
+        $or: [
+          { firstName: { $regex: sellerName, $options: "i" } },
+          { lastName: { $regex: sellerName, $options: "i" } }
+        ]
+      };
+      const sellers = await User.find(sellerQuery, "_id");
+      const sellerIDs = sellers.map((seller) => seller._id);
+
+      // Include sellerID filter if sellers are found
+      if (sellerIDs.length > 0) {
+        query.sellerID = { $in: sellerIDs }; // Match items that belong to the sellers
+      }
+    }
+      
+
     if (categories) {
       const categoryArray = categories.split(",");
       query.category = { $in: categoryArray };
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseFloat(minPrice);
+      if (maxPrice) query.price.$lte = parseFloat(maxPrice);
     }
 
     const items = await Item.find(query)
