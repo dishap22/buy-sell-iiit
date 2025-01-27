@@ -7,6 +7,7 @@ const orderSchema = new mongoose.Schema({
     items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', required: true }],
     totalAmount: { type: Number, required: true },
     otp: { type: String, required: true },   
+    status: { type: String, required: true, default: 'pending', enum: ['pending', 'completed'] },
 }, {
     timestamps: true
 });

@@ -1,5 +1,6 @@
-import { Container, Flex, Text, Link, HStack } from '@chakra-ui/react'
+import { Container, Flex, Text, HStack } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Navbar = ({ onLogout }) => {
    const navigate = useNavigate();

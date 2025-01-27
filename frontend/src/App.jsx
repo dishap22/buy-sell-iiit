@@ -6,6 +6,7 @@ import Profile from './pages/Profile.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Login from './pages/Login.jsx'
 import { useEffect, useState } from 'react';
+import Search from './pages/Search.jsx'
 
 const PrivateRoute = ({ element }) => {
   if (localStorage.getItem('token')) {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
         <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+        <Route path="/search" element={<PrivateRoute element={<Search />} />} />
       </Routes>
     </Box>
   )
