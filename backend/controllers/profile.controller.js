@@ -25,9 +25,7 @@ export const updateProfile = async (req, res) => {
             user.email = req.body.email || user.email;
             user.age = req.body.age || user.age;
             user.contactNumber = req.body.contactNumber || user.contactNumber;
-            if (req.body.password && req.body.password.trim() !== "") {
-                user.password = req.body.password; // Hashing will be handled by the pre('save') hook
-            }
+            user.password = req.body.password || user.password;
     
             await user.save();
             return res.status(200).json({ message: "Profile updated successfully" });
