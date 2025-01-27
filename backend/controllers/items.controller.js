@@ -90,3 +90,26 @@ export const getItem = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getSellerItems = async (req, res) => {
+  try {
+    console.log("User from token:", req.user);
+    const items = await Item.find({ sellerID: req.user.id });
+    res.status(200).json(items);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const deleteItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    await Item.findByIdAndDelete(itemId); 
+    res.status(200).json({ message: "Item deleted successfully" });
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};

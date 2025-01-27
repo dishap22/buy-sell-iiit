@@ -29,7 +29,7 @@ const Search = () => {
           title: "An error occurred.",
           description: "Unable to fetch items.",
           status: "error",
-          duration: 9000,
+          duration: 3000,
           isClosable: true,
         });
       }
