@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import Search from './pages/Search.jsx'
 import AddItem from './pages/AddItem.jsx'
 import ItemPage from './pages/ItemPage.jsx'
+import MyCart from './pages/MyCart.jsx'
 
 const PrivateRoute = ({ element }) => {
   if (localStorage.getItem('token')) {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-item" element={<PrivateRoute element={<AddItem />} />} />
+        <Route path="/cart" element={<PrivateRoute element={<MyCart />} />} />
         <Route path="/items/:itemId" element={<PrivateRoute element={<ItemPage />} />} />
       </Routes>
     </Box>
