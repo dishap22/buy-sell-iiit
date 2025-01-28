@@ -7,6 +7,7 @@ import profileRouter from "./routes/profile.routes.js";
 import itemsRouter from "./routes/items.routes.js";
 import cartRouter from "./routes/cart.routes.js";
 import orderRouter from "./routes/orders.routes.js";
+import deliveriesRouter from "./routes/deliveries.routes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/api/profile", profileRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/deliveries", deliveriesRouter);
 
 app.listen(PORT ,() => {
     connectDB();
