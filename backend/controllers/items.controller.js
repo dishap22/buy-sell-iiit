@@ -81,9 +81,7 @@ export const addItems = async (req, res) => {
 export const getItem = async (req, res) => {
   try {
     const { itemId } = req.params;
-    console.log(itemId);
     const item = await Item.findById(itemId).populate({ path: "sellerID", select: "firstName lastName" }); 
-    console.log(item); 
     res.status(200).json(item);
   } catch (error) {
     console.log(error);
