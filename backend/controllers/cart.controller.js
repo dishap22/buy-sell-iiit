@@ -11,18 +11,15 @@ export const addToCart = async (req, res) => {
     const { itemId } = req.body;
     
     try {
-        // First verify we have a valid user
         if (!req.user) {
             return res.status(401).json({ message: "User not authenticated" });
         }
 
-        // Fetch fresh user document from database
         const user = await User.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Verify itemId is valid
         if (!mongoose.Types.ObjectId.isValid(itemId)) {
             return res.status(400).json({ message: "Invalid item ID format" });
         }
@@ -36,18 +33,15 @@ export const addToCart = async (req, res) => {
             return res.status(400).json({ message: "You cannot add your own item to cart" });
         }
 
-        // Initialize cart if it doesn't exist
         if (!user.cart) {
             user.cart = [];
         }
 
-        // Check if item already exists in cart
         const isAlreadyInCart = user.cart.includes(itemId);
         if (isAlreadyInCart) {
             return res.status(400).json({ message: "Item already in cart" });
         }
-
-        // Add item to cart - just push the itemId directly since cart array expects ObjectIds
+        
         user.cart.push(itemId);
         await user.save();
 
@@ -115,33 +109,31 @@ export const checkout = async (req, res) => {
             return res.status(400).json({ message: "Cart is empty" });
         }
 
-        const totalPrice = user.cart.reduce((sum, item) => sum + (item.price || 0), 0);
+        const orders = [];
+        for (let item of user.cart) {
+            const totalAmount = item.price || 0;
+            const otp = generateOTP();
+            const transactionId = new mongoose.Types.ObjectId().toString();
 
-        const otp = generateOTP();
+            const order = new Order({
+                transactionId,
+                buyerId: user._id,
+                itemId: item._id,
+                sellerId: item.sellerID,
+                totalAmount,
+                otp
+            });
 
-        const items = user.cart.map(itemId => ({
-            itemId,
-            sellerId: user.cart.find(id => id.toString() === itemId.toString()).sellerID
-        }));
-
-        const transactionId = new mongoose.Types.ObjectId().toString(); 
-
-        const order = new Order({
-            transactionId,
-            buyerId: user._id,
-            items,
-            totalAmount: totalPrice,
-            otp
-        });
-
-        await order.save();
+            await order.save();
+            orders.push(order);  
+        }
 
         user.cart = [];
         await user.save();
 
-        res.status(200).json({ message: "Order placed successfully" });
+        res.status(200).json({ message: "Orders placed successfully" });
     } catch (error) {
         console.error("Error during checkout:", error);
-        res.status(500).json({ message: "Error placing order" });
+        res.status(500).json({ message: "Error placing orders" });
     }
 };
