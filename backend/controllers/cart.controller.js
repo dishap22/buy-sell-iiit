@@ -111,6 +111,15 @@ export const checkout = async (req, res) => {
 
         const orders = [];
         for (let item of user.cart) {
+            const existingOrder = await Order.findOne({ 
+                itemId: item._id, 
+                status: { $in: ['pending', 'completed'] }
+            });
+
+            if (existingOrder) {
+                continue; 
+            }
+
             const totalAmount = item.price || 0;
             const otp = generateOTP();
             const transactionId = new mongoose.Types.ObjectId().toString();
