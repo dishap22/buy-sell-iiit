@@ -1,6 +1,6 @@
 import Item from "../models/item.model.js"; // Replace with your actual item model
 import User from "../models/user.model.js"; // Replace with your actual user model
-
+import Order from "../models/order.model.js"; // Replace with your actual order model
 
 // Return all or a filtered set of items for search page
 export const getItems = async (req, res) => {
@@ -9,6 +9,8 @@ export const getItems = async (req, res) => {
 
     let query = {};
     let sellerQuery = {};
+
+    const orderedItems = await Order.distinct("itemId");
 
     if (search) {
       query.name = { $regex: search, $options: "i" };
@@ -39,6 +41,10 @@ export const getItems = async (req, res) => {
       query.price = {};
       if (minPrice) query.price.$gte = parseFloat(minPrice);
       if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    }
+
+    if (orderedItems.length > 0) {
+      query._id = { $nin: orderedItems };
     }
 
     const items = await Item.find(query)
