@@ -6,6 +6,7 @@ import authRouter   from "./routes/auth.routes.js";
 import profileRouter from "./routes/profile.routes.js";
 import itemsRouter from "./routes/items.routes.js";
 import cartRouter from "./routes/cart.routes.js";
+import orderRouter from "./routes/orders.routes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/orders", orderRouter);
 
 app.listen(PORT ,() => {
     connectDB();

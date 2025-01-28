@@ -10,6 +10,8 @@ import Search from './pages/Search.jsx'
 import AddItem from './pages/AddItem.jsx'
 import ItemPage from './pages/ItemPage.jsx'
 import MyCart from './pages/MyCart.jsx'
+import Orders from './pages/Orders.jsx'
+import Deliveries from './pages/Deliveries.jsx'
 
 const PrivateRoute = ({ element }) => {
   if (localStorage.getItem('token')) {
@@ -47,6 +49,8 @@ function App() {
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-item" element={<PrivateRoute element={<AddItem />} />} />
         <Route path="/cart" element={<PrivateRoute element={<MyCart />} />} />
+        <Route path="/orders" element={<PrivateRoute element={<Orders />}/>} />
+        <Route path="/deliveries" element={<PrivateRoute element={<Deliveries />}/>} />
         <Route path="/items/:itemId" element={<PrivateRoute element={<ItemPage />} />} />
       </Routes>
     </Box>

@@ -122,6 +122,7 @@ export const checkout = async (req, res) => {
 
             const totalAmount = item.price || 0;
             const otp = generateOTP();
+            const hashedOtp = otp;
             const transactionId = new mongoose.Types.ObjectId().toString();
 
             const order = new Order({
@@ -130,7 +131,8 @@ export const checkout = async (req, res) => {
                 itemId: item._id,
                 sellerId: item.sellerID,
                 totalAmount,
-                otp
+                otp,
+                hashedOtp
             });
 
             await order.save();
