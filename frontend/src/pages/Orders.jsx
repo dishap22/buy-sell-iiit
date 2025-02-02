@@ -16,7 +16,7 @@ const Orders = () => {
       if (type === "bought") endpoint = "/api/orders/bought";
       if (type === "sold") endpoint = "/api/orders/sold";
 
-      const  response = await axios.get(`http://localhost:5000${endpoint}`, {
+      const  response = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}${endpoint}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

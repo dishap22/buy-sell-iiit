@@ -47,7 +47,7 @@ const Search = () => {
       if (filters.length) query.append("categories", filters.join(","));
       if (minPrice) query.append("minPrice", minPrice);
       if (maxPrice) query.append("maxPrice", maxPrice);
-      const { data } = await axios.get(`http://localhost:5000/api/items?${query.toString()}`, {
+      const { data } = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}/api/items?${query.toString()}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setItems(data.items);

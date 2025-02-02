@@ -5,18 +5,17 @@ import axios from "axios";
 
 const ItemPage = () => {
     const { itemId } = useParams();
-    const [item, setItem] = useState(null); // Initialize item as null
-    const [user, setUser] = useState(null); // Initialize user as null
-    const [loadingItem, setLoadingItem] = useState(true); // Loading state for item
-    const [loadingUser, setLoadingUser] = useState(true); // Loading state for user
+    const [item, setItem] = useState(null); 
+    const [user, setUser] = useState(null); 
+    const [loadingItem, setLoadingItem] = useState(true);
+    const [loadingUser, setLoadingUser] = useState(true); 
 
     const toast = useToast();
     const navigate = useNavigate();
 
-    // Fetch user data
     const fetchUser = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/profile/', {
+            const response = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}/api/profile/`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -36,10 +35,9 @@ const ItemPage = () => {
         }
     };
 
-    // Fetch item data
     const fetchItem = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/items/${itemId}`, {
+            const response = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}/api/items/${itemId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -59,7 +57,6 @@ const ItemPage = () => {
         }
     };
 
-    // Add item to cart
     const addToCart = async () => {
         if (!user) {
             toast({
@@ -85,7 +82,7 @@ const ItemPage = () => {
 
         try {
             await axios.post(
-                "http://localhost:5000/api/cart",
+                `http://localhost:${import.meta.env.VITE_PORT}/api/cart`,
                 { itemId },
                 {
                     headers: {
@@ -123,18 +120,15 @@ const ItemPage = () => {
         }
     };
 
-    // Use effect to fetch both user and item data
     useEffect(() => {
         fetchUser();
         fetchItem();
     }, [itemId]);
 
-    // Show loading messages
     if (loadingItem || loadingUser) {
         return <Text>Loading...</Text>;
     }
-
-    // Handle item not found
+    
     if (!item) {
         return <Text>Item not found</Text>;
     }

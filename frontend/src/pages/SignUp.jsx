@@ -19,6 +19,8 @@ const SignUp = () => {
   const Navigate = useNavigate();
 
   const handleAddNewUser = async () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(students\.iiit\.ac\.in|research\.iiit\.ac\.in|iiit\.ac\.in)$/;
+
     if (!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.age || !newUser.contactNumber || !newUser.password) {
       toast({
         title: "Error",
@@ -27,6 +29,17 @@ const SignUp = () => {
         duration: 3000,
         isClosable: true,
       })
+    }
+
+    if (!emailRegex.test(newUser.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please use a IIIT Hyderabad email (@students.iiit.ac.in, @research.iiit.ac.in, or @iiit.ac.in)",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
 
     try {

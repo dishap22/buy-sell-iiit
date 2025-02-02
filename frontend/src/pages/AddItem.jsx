@@ -175,7 +175,7 @@ import { Text, Grid, GridItem, Input, Box, useColorModeValue, Heading, VStack, B
                 <VStack spacing={2}>
                   <Text fontWeight="bold">{product.name}</Text>
                   <Text>{product.description}</Text>
-                  <Text>Price: ${product.price}</Text>
+                  <Text>Price: ₹{product.price}</Text>
                   <Text>Category: {product.category}</Text>
                   <Button
                     colorScheme="red"

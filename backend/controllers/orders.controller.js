@@ -1,6 +1,5 @@
 import User from '../models/user.model.js';
 import Order from '../models/order.model.js';
-import Item from '../models/item.model.js';
 
 export const getPendingOrders = async (req, res) => {
     try {

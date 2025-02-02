@@ -8,11 +8,10 @@ const Deliveries = () => {
     const [otpInputs, setOtpInputs] = useState({});
     const toast = useToast();
 
-    // Fetch pending orders for the seller
     const fetchPendingOrders = async () => {
         try {
             setLoading(true);
-            const response = await axios.get("http://localhost:5000/api/deliveries", {
+            const response = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}/api/deliveries`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -32,7 +31,6 @@ const Deliveries = () => {
         }
     };
 
-    // Handle OTP submission
     const handleCompleteTransaction = async (orderId) => {
         try {
             const enteredOtp = otpInputs[orderId];
@@ -48,7 +46,7 @@ const Deliveries = () => {
             }
 
             const response = await axios.post(
-                "http://localhost:5000/api/deliveries/complete",
+                `http://localhost:${import.meta.env.VITE_PORT}/api/deliveries/complete`,
                 { orderId, enteredOtp },
                 {
                     headers: {
@@ -65,7 +63,6 @@ const Deliveries = () => {
                 isClosable: true,
             });
 
-            // Refresh the pending orders list
             fetchPendingOrders();
         } catch (error) {
             console.error(error);

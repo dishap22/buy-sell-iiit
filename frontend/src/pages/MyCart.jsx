@@ -12,7 +12,7 @@ const MyCart = () => {
         const fetchCartItems = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get("http://localhost:5000/api/cart", {
+                const response = await axios.get(`http://localhost:${import.meta.env.VITE_PORT}/api/cart`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
@@ -39,7 +39,7 @@ const MyCart = () => {
 
     const handleRemoveFromCart = async (productId) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/cart/${productId}`, {
+            const response = await axios.delete(`http://localhost:${import.meta.env.VITE_PORT}/api/cart/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -66,7 +66,7 @@ const MyCart = () => {
     
     const handleCheckout = async () => {
         try {
-            await axios.post("http://localhost:5000/api/cart/checkout", {}, {
+            await axios.post(`http://localhost:${import.meta.env.VITE_PORT}/api/cart/checkout`, {}, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

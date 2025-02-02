@@ -1,8 +1,7 @@
-import Item from "../models/item.model.js"; // Replace with your actual item model
-import User from "../models/user.model.js"; // Replace with your actual user model
-import Order from "../models/order.model.js"; // Replace with your actual order model
+import Item from "../models/item.model.js"; 
+import User from "../models/user.model.js"; 
+import Order from "../models/order.model.js"; 
 
-// Return all or a filtered set of items for search page
 export const getItems = async (req, res) => {
   try {
     const { search, sellerName, categories, minPrice, maxPrice } = req.query;
@@ -54,7 +53,7 @@ export const getItems = async (req, res) => {
       model: User, 
     });
     
-    const distinctCategories = await Item.distinct("category"); // Fetch unique categories
+    const distinctCategories = await Item.distinct("category"); 
 
     res.status(200).json({ items, categories: distinctCategories });
   } catch (error) {
@@ -83,7 +82,6 @@ export const addItems = async (req, res) => {
   }
 };
 
-// Returns a single item by it's ID for the product pages
 export const getItem = async (req, res) => {
   try {
     const { itemId } = req.params;

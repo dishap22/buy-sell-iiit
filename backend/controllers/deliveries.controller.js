@@ -1,5 +1,4 @@
 import Order from '../models/order.model.js';
-import Item from '../models/item.model.js';
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
 
